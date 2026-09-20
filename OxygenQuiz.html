@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oxygen Quiz — Grade 8 Chemistry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --blue:#0081C5;
+    --blue-d:#01598C;
+    --blue-l:#83C0E9;
+    --pale:#E8F3FB;
+    --ink:#1A2430;
+    --muted:#5C6B7A;
+    --card:#FFFFFF;
+    --page:#0081C5;
+    --line:#CFE7F6;
+    --ok:#1F7A4D;
+    --ok-bg:#E7F3EC;
+    --no:#B23A2E;
+    --no-bg:#FBEBE9;
+    --amber:#D97A16;
+    --shadow:0 10px 30px rgba(1,60,100,.18);
+  }
+  :root:not([data-theme="light"]){}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --pale:#122B3C; --ink:#E9F2F8; --muted:#A9BECD; --card:#0E2433;
+      --line:#1E4257; --page:#06121C;
+      --ok-bg:#122E22; --no-bg:#301715;
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --pale:#122B3C; --ink:#E9F2F8; --muted:#A9BECD; --card:#0E2433;
+    --line:#1E4257; --page:#06121C; --ok-bg:#122E22; --no-bg:#301715;
+    --shadow:0 10px 30px rgba(0,0,0,.45);
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+  body{
+    margin:0;min-height:100%;
+    font-family:Roboto,"Segoe UI",Arial,Helvetica,sans-serif;
+    color:var(--ink);
+    background:var(--page);
+    background-image:linear-gradient(120deg,#0079BE 0%,#1E93D2 45%,#8FC9EC 100%);
+    background-attachment:fixed;
+  }
+  @media (prefers-color-scheme: dark){
+    body:not([data-theme="light"]){background-image:linear-gradient(120deg,#062032 0%,#0A3550 100%)}
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:22px 16px 48px}
+  header.top{color:#fff;padding:10px 4px 18px}
+  .eyebrow{font-size:12px;letter-spacing:.18em;font-weight:700;opacity:.9;margin:0 0 6px}
+  h1{font-size:clamp(22px,4.5vw,32px);line-height:1.15;margin:0;font-weight:900;letter-spacing:-.01em}
+  .sub{margin:8px 0 0;font-size:15px;opacity:.92}
+  .card{
+    background:var(--card);border-radius:18px;padding:22px;
+    box-shadow:var(--shadow);border:1px solid var(--line);
+  }
+  .bar{height:7px;border-radius:99px;background:var(--pale);overflow:hidden;margin-bottom:6px}
+  .bar > i{display:block;height:100%;width:0;background:var(--blue);transition:width .35s ease}
+  .meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:18px}
+  .qtext{font-size:clamp(17px,2.6vw,21px);font-weight:700;line-height:1.35;margin:0 0 18px}
+  .opts{display:grid;gap:10px}
+  button.opt{
+    font:inherit;text-align:left;width:100%;cursor:pointer;
+    background:var(--pale);color:var(--ink);
+    border:1.5px solid transparent;border-radius:12px;
+    padding:14px 16px;display:flex;gap:12px;align-items:flex-start;
+    transition:border-color .15s, transform .08s;
+  }
+  button.opt:hover:not(:disabled){border-color:var(--blue-l)}
+  button.opt:active:not(:disabled){transform:scale(.995)}
+  button.opt:disabled{cursor:default}
+  .tag{
+    flex:0 0 26px;height:26px;border-radius:50%;
+    background:var(--blue);color:#fff;font-size:13px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;
+  }
+  .opt.correct{background:var(--ok-bg);border-color:var(--ok)}
+  .opt.correct .tag{background:var(--ok)}
+  .opt.wrong{background:var(--no-bg);border-color:var(--no)}
+  .opt.wrong .tag{background:var(--no)}
+  .opt.dim{opacity:.55}
+  .fb{margin-top:16px;border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.5;display:none}
+  .fb.show{display:block}
+  .fb b{display:block;margin-bottom:3px}
+  .fb.good{background:var(--ok-bg);color:var(--ok)}
+  .fb.bad{background:var(--no-bg);color:var(--no)}
+  .row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+  button.cta{
+    font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:11px;
+    padding:12px 22px;background:var(--blue);color:#fff;
+  }
+  button.cta:hover{background:var(--blue-d)}
+  button.ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue-l)}
+  button.ghost:hover{background:var(--pale)}
+  .score{text-align:center;padding:14px 4px}
+  .score .num{font-size:clamp(46px,11vw,72px);font-weight:900;color:var(--blue);line-height:1}
+  .score .of{font-size:16px;color:var(--muted);margin-top:4px}
+  .verdict{font-size:19px;font-weight:700;margin:16px 0 6px}
+  .best{font-size:14px;color:var(--muted)}
+  .review{margin-top:22px;text-align:left;display:grid;gap:8px}
+  .rv{display:flex;gap:10px;font-size:14px;align-items:flex-start;padding:9px 12px;border-radius:9px;background:var(--pale)}
+  .rv .m{flex:0 0 18px;font-weight:900}
+  .rv.y .m{color:var(--ok)} .rv.n .m{color:var(--no)}
+  footer{color:#fff;opacity:.85;font-size:12.5px;text-align:center;margin-top:20px;padding:0 8px}
+  sub{font-size:.72em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">GRADE 8 · CHEMISTRY</p>
+    <h1>Chemical Properties of Oxygen</h1>
+    <p class="sub">Uses of oxygen · The oxygen cycle in nature — 10 questions</p>
+  </header>
+
+  <main class="card" id="stage" aria-live="polite"></main>
+
+  <footer>Answer every question, then check your score. You can retake the quiz as many times as you like.</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "A glowing splint is lowered into a gas jar and immediately bursts into flame. Which gas is in the jar?",
+    opts: ["Carbon dioxide", "Hydrogen", "Oxygen", "Nitrogen"],
+    a: 2,
+    why: "Oxygen supports burning, so it relights a glowing splint. It does not burn itself — this is the standard laboratory test for oxygen."
+  },
+  {
+    q: "Magnesium ribbon burns in oxygen: 2Mg + O<sub>2</sub> → 2MgO. What type of oxide is the product?",
+    opts: ["An acidic oxide", "A basic oxide", "A neutral oxide", "No oxide is formed"],
+    a: 1,
+    why: "Metal + oxygen gives a basic oxide. Magnesium oxide reacts with water to form a base, Mg(OH)<sub>2</sub>."
+  },
+  {
+    q: "Which of these oxides is acidic?",
+    opts: ["CaO", "CuO", "SO<sub>2</sub>", "Fe<sub>3</sub>O<sub>4</sub>"],
+    a: 2,
+    why: "Sulfur is a non-metal, so SO<sub>2</sub> is an acidic oxide: SO<sub>2</sub> + H<sub>2</sub>O → H<sub>2</sub>SO<sub>3</sub>. The other three are metal oxides."
+  },
+  {
+    q: "Complete the equation: 4Al + 3O<sub>2</sub> → ?",
+    opts: ["2Al<sub>2</sub>O<sub>3</sub>", "4AlO", "Al<sub>3</sub>O<sub>4</sub>", "4Al<sub>2</sub>O"],
+    a: 0,
+    why: "Aluminium forms Al<sub>2</sub>O<sub>3</sub>. Eight oxygen atoms on the left (3 × 2 = 6… balanced as 4 : 3 : 2) give two formula units of Al<sub>2</sub>O<sub>3</sub>, so both aluminium and oxygen atoms balance."
+  },
+  {
+    q: "Which process is an example of SLOW oxidation?",
+    opts: ["A candle burning", "Iron rusting", "Magnesium ribbon burning", "Natural gas burning on a stove"],
+    a: 1,
+    why: "Rusting releases heat only, very slowly, with no flame. The other three are rapid combustion — heat and light together."
+  },
+  {
+    q: "Which one is NOT a side of the fire triangle?",
+    opts: ["Fuel", "Oxygen", "Water", "Heat (ignition temperature)"],
+    a: 2,
+    why: "The three sides are fuel, oxygen and heat. Water is used to put a fire out — it cools the fuel below its ignition temperature."
+  },
+  {
+    q: "Roughly what percentage of the air is oxygen, by volume?",
+    opts: ["About 5 %", "About 21 %", "About 50 %", "About 78 %"],
+    a: 1,
+    why: "Oxygen makes up about 21 % of the air. Nitrogen, at about 78 %, is the most abundant gas in the atmosphere."
+  },
+  {
+    q: "Which process ADDS oxygen to the atmosphere?",
+    opts: ["Respiration", "Photosynthesis", "Rusting", "Burning fossil fuels"],
+    a: 1,
+    why: "In photosynthesis, 6CO<sub>2</sub> + 6H<sub>2</sub>O → C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub>. The other three all consume oxygen."
+  },
+  {
+    q: "Why do rockets carry liquid oxygen on board?",
+    opts: [
+      "To cool the engines down",
+      "Because it is the fuel that burns",
+      "To act as the oxidiser, since there is no air in space",
+      "To give the astronauts something to drink"
+    ],
+    a: 2,
+    why: "Fuel cannot burn without an oxidiser. High above the atmosphere there is no air, so the oxygen has to be carried as liquid oxygen (LOX)."
+  },
+  {
+    q: "Sulfur burns in oxygen with a bright blue flame. Which statement is TRUE about the product?",
+    opts: [
+      "It is a basic oxide that gives a base with water",
+      "It is an acidic oxide that gives an acid with water",
+      "It is a metal oxide",
+      "No gas is produced"
+    ],
+    a: 1,
+    why: "S + O<sub>2</sub> → SO<sub>2</sub>, an acidic oxide with a sharp, choking smell. With water it gives H<sub>2</sub>SO<sub>3</sub>, and in the atmosphere it contributes to acid rain."
+  }
+];
+
+const LETTERS = ["A","B","C","D"];
+const stage = document.getElementById("stage");
+let idx = 0, score = 0, answered = false, results = [];
+
+function readBest(){
+  try { const v = localStorage.getItem("oxygen-quiz-best"); return v ? parseInt(v,10) : null; }
+  catch(e){ return null; }
+}
+function writeBest(v){
+  try { const b = readBest(); if (b === null || v > b) localStorage.setItem("oxygen-quiz-best", String(v)); }
+  catch(e){ /* storage unavailable — ignore */ }
+}
+
+function renderQuestion(){
+  const item = QUESTIONS[idx];
+  answered = false;
+  const pct = (idx / QUESTIONS.length) * 100;
+  stage.innerHTML = `
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="meta"><span>Question ${idx+1} of ${QUESTIONS.length}</span><span>Score: ${score}</span></div>
+    <p class="qtext">${item.q}</p>
+    <div class="opts" id="opts"></div>
+    <div class="fb" id="fb"></div>
+    <div class="row" id="row"></div>
+  `;
+  const box = document.getElementById("opts");
+  item.opts.forEach((text, i) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.type = "button";
+    b.innerHTML = `<span class="tag">${LETTERS[i]}</span><span>${text}</span>`;
+    b.addEventListener("click", () => choose(i));
+    box.appendChild(b);
+  });
+}
+
+function choose(i){
+  if (answered) return;
+  answered = true;
+  const item = QUESTIONS[idx];
+  const correct = i === item.a;
+  if (correct) score++;
+  results.push({ q: item.q, ok: correct });
+
+  [...document.querySelectorAll(".opt")].forEach((b, j) => {
+    b.disabled = true;
+    if (j === item.a) b.classList.add("correct");
+    else if (j === i) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+
+  const fb = document.getElementById("fb");
+  fb.className = "fb show " + (correct ? "good" : "bad");
+  fb.innerHTML = `<b>${correct ? "Correct!" : "Not quite."}</b>${item.why}`;
+
+  const row = document.getElementById("row");
+  const next = document.createElement("button");
+  next.className = "cta";
+  next.type = "button";
+  next.textContent = idx + 1 < QUESTIONS.length ? "Next question" : "See my score";
+  next.addEventListener("click", () => {
+    idx++;
+    if (idx < QUESTIONS.length) renderQuestion(); else renderScore();
+  });
+  row.appendChild(next);
+  next.focus();
+}
+
+function renderScore(){
+  writeBest(score);
+  const best = readBest();
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  let verdict;
+  if (pct === 100) verdict = "Perfect — you know your oxygen chemistry!";
+  else if (pct >= 80) verdict = "Very good. Just a couple of details to revise.";
+  else if (pct >= 60) verdict = "A solid start. Go back over the equations and the oxygen cycle.";
+  else verdict = "Worth another look at the lesson — then try again.";
+
+  const review = results.map((r, i) =>
+    `<div class="rv ${r.ok ? "y" : "n"}"><span class="m">${r.ok ? "✓" : "✗"}</span><span>${i+1}. ${r.q}</span></div>`
+  ).join("");
+
+  stage.innerHTML = `
+    <div class="score">
+      <div class="num">${score}<span style="font-size:.42em;color:var(--muted)">/${QUESTIONS.length}</span></div>
+      <div class="of">${pct}% correct</div>
+      <p class="verdict">${verdict}</p>
+      ${best !== null ? `<p class="best">Your best score on this device: ${best}/${QUESTIONS.length}</p>` : ""}
+      <div class="review">${review}</div>
+      <div class="row" style="justify-content:center">
+        <button class="cta ghost" type="button" id="again">Try again</button>
+      </div>
+    </div>
+  `;
+  document.getElementById("again").addEventListener("click", () => {
+    idx = 0; score = 0; results = []; renderQuestion();
+  });
+}
+
+renderQuestion();
+</script>
+</body>
+</html>
